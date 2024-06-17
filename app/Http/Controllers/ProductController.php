@@ -72,7 +72,7 @@ class ProductController extends Controller
         ]);
 
         $path = $request->file('image')->store('productImages', 'public');
-        $attributes['image'] = asset('storage/' . $path);
+        $attributes['image'] = asset('public/storage/' . $path);
 
         return response(Product::create($attributes));
     }

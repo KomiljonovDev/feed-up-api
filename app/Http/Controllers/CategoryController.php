@@ -53,7 +53,7 @@ class CategoryController extends Controller
             'image'=>['required', 'image']
         ]);
         $path = $request->file('image')->store('categoryImages', 'public');
-        $attributes['image'] = asset('storage/' . $path);
+        $attributes['image'] = asset('public/storage/' . $path);
         return response(Category::create($attributes));
     }
 
@@ -116,7 +116,7 @@ class CategoryController extends Controller
             Storage::delete($category->image);
 
             $path = $request->file('image')->store('categoryImages', 'public');
-            $attributes['image'] = asset('storage/' . $path);
+            $attributes['image'] = asset('public/storage/' . $path);
         }
         $category->update($attributes);
         return response($category);
