@@ -32,12 +32,10 @@ Route::post('/login', [UserController::class,'login']);
 Route::middleware('auth:sanctum')->group(function (){
     // Categories
     Route::post('category/create', [CategoryController::class, 'store']);
-    Route::get('categories/{category:id}', [CategoryController::class, 'show']);
     Route::patch('categories/{category:id}', [CategoryController::class, 'update']);
     Route::delete('categories/{category:id}', [CategoryController::class, 'destroy']);
     // Products
     Route::post('product/create', [ProductController::class, 'store']);
-    Route::get('products/{product:id}', [ProductController::class, 'show']);
     Route::patch('products/{product:id}', [ProductController::class, 'update']);
     Route::delete('products/{product:id}', [ProductController::class, 'destroy']);
     // Orders
@@ -50,8 +48,14 @@ Route::middleware('auth:sanctum')->group(function (){
 // User
 Route::get('getToken', [CustomerController::class, 'getToken']);
 
+// Category
 Route::get('categories', [CategoryController::class, 'get']);
+Route::get('categories/{category:id}', [CategoryController::class, 'show']);
+
+// Product
 Route::get('products', [ProductController::class, 'get']);
+Route::get('products/{product:id}', [ProductController::class, 'show']);
+
 
 Route::post('cartItem/create', [CartItemController::class, 'store']);
 Route::delete('cartItem/{product:id}', [CartItemController::class, 'destroy']);
