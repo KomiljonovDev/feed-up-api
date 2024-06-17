@@ -25,13 +25,13 @@ class ProductController extends Controller
     }
     /**
      * @OA\Post(
-     *     path="/category/create",
-     *     summary="Create category",
-     *     tags={"Categories"},
+     *     path="/product/create",
+     *     summary="Create product",
+     *     tags={"Products"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "description", "slug", "image"},
+     *             required={"category_id", "name", "price", "description", "slug", "image"},
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="description", type="string"),
      *             @OA\Property(property="slug", type="string"),
