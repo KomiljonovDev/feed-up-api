@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 use OpenApi\Annotations as OA;
 
@@ -75,5 +76,94 @@ class ProductController extends Controller
         $attributes['image'] = asset('public/storage/' . $path);
 
         return response(Product::create($attributes));
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/products",
+     *     summary="Get product",
+     *     @OA\RequestBody(
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success response",
+     *         @OA\JsonContent(
+     *         )
+     *     )
+     * )
+     */
+    public function show ($product) {
+        return response($product);
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/products/{product:id}",
+     *     summary="Update product",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="product:id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name", "description", "slug", "category_id", "price"},
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="description", type="string"),
+     *             @OA\Property(property="slug", type="string"),
+     *             @OA\Property(property="image", type="string", format="binary")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function update(Request $request, Product $product)
+    {
+        $attributes = $request->validate([
+            'category_id'=>['required',Rule::exists('categories', 'id')],
+            'name'=>['required', 'min:3'],
+            'description'=>['required', 'min:10'],
+            'slug'=>['required', Rule::unique('products', 'slug')->ignore($product->id)],
+            'price'=>['required', 'integer'],
+            'image'=>['image']
+        ]);
+        if ($request->hasFile('image')){
+            Storage::delete($product->image);
+
+            $path = $request->file('image')->store('productImages', 'public');
+            $attributes['image'] = asset('public/storage/' . $path);
+        }
+        $product->update($attributes);
+        return response($product);
+    }
+
+
+    /**
+     * @OA\Delete(
+     *     path="/products/{product:id}",
+     *     summary="Delete prodcut",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="product:id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function destroy(Product $product)
+    {
+        Storage::delete($product->image);
+        $product->delete();
+        return response(['message'=>'successfully deleted']);
     }
 }
