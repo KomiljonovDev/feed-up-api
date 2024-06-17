@@ -25,35 +25,22 @@ class ProductController extends Controller
     }
     /**
      * @OA\Post(
-     *     path="/product/create",
-     *     summary="Create a new product",
-     *     tags={"Products"},
+     *     path="/category/create",
+     *     summary="Create category",
+     *     tags={"Categories"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *         @OA\Property(property="category_id", type="integer"),
-     *              @OA\Property(property="name", type="string"),
-     *              @OA\Property(property="description", type="string"),
-     *              @OA\Property(property="slug", type="string"),
-     *              @OA\Property(property="price", type="number"),
-     *              @OA\Property(property="image", type="string", format="binary")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success response",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="id", type="integer"),
-     *             @OA\Property(property="category_id", type="integer"),
+     *             required={"name", "description", "slug", "image"},
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="description", type="string"),
      *             @OA\Property(property="slug", type="string"),
-     *             @OA\Property(property="price", type="number"),
-     *             @OA\Property(property="image", type="string"),
-     *             @OA\Property(property="created_at", type="string"),
-     *             @OA\Property(property="updated_at", type="string"),
+     *             @OA\Property(property="image", type="string", format="binary")
      *         )
-     *     )
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found")
      * )
      */
 
