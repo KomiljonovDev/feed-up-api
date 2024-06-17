@@ -8,6 +8,7 @@ use OpenApi\Annotations as OA;
 
 class ProductController extends Controller
 {
+    
     /**
      * @OA\Post(
      *     path="/product/create",
