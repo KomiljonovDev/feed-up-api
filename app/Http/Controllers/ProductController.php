@@ -10,18 +10,13 @@ use OpenApi\Annotations as OA;
 class ProductController extends Controller
 {
     /**
-     * @OA\Post(
+     * @OA\Get(
      *     path="/products",
-     *     summary="Get All products",
-     *     @OA\RequestBody(
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success response",
-     *         @OA\JsonContent(
-     *         )
-     *     )
+     *     summary="Get products",
+     *     tags={"Products"},
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found")
      * )
      */
     public function get () {
