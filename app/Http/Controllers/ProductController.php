@@ -8,7 +8,25 @@ use OpenApi\Annotations as OA;
 
 class ProductController extends Controller
 {
-    
+    /**
+     * @OA\Post(
+     *     path="/products",
+     *     summary="Get All products",
+     *     @OA\RequestBody(
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Success response",
+     *         @OA\JsonContent(
+     *         )
+     *     )
+     * )
+     */
+    public function get () {
+        $products = Product::paginate(20);
+        return response($products);
+    }
     /**
      * @OA\Post(
      *     path="/product/create",
