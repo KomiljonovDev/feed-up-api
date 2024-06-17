@@ -79,18 +79,19 @@ class ProductController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/products",
-     *     summary="Get product",
-     *     @OA\RequestBody(
-     *         )
+     * @OA\Get(
+     *     path="/products/{product:id}",
+     *     summary="Show product",
+     *     tags={"Products"},
+     *     @OA\Parameter(
+     *         name="product:id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Success response",
-     *         @OA\JsonContent(
-     *         )
-     *     )
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found")
      * )
      */
     public function show (Product $product) {
