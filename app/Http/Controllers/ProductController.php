@@ -27,6 +27,7 @@ class ProductController extends Controller
      * @OA\Post(
      *     path="/product/create",
      *     summary="Create a new product",
+     *     tags={"Products"},
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
