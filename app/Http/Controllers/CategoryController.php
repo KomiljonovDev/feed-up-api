@@ -32,11 +32,8 @@ class CategoryController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "description", "slug", "image"},
+     *             required={"name"},
      *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="slug", type="string"),
-     *             @OA\Property(property="image", type="string", format="binary")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Successful operation"),
@@ -48,12 +45,7 @@ class CategoryController extends Controller
     {
         $attributes = $request->validate([
             'name'=>['required', 'min:3'],
-            'description'=>['required', 'min:10'],
-            'slug'=>['required', 'unique:categories'],
-            'image'=>['required', 'image']
         ]);
-        $path = $request->file('image')->store('categoryImages', 'public');
-        $attributes['image'] = asset('public/storage/' . $path);
         return response(Category::create($attributes));
     }
 
@@ -92,11 +84,8 @@ class CategoryController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "description", "slug"},
+     *             required={"name"},
      *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="slug", type="string"),
-     *             @OA\Property(property="image", type="string", format="binary")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Successful operation"),
@@ -107,17 +96,8 @@ class CategoryController extends Controller
     public function update(Request $request, Category $category)
     {
         $attributes = $request->validate([
-            'name'=>['required', 'min:3'],
-            'description'=>['required', 'min:10'],
-            'slug'=>['required', Rule::unique('categories', 'slug')->ignore($category->id)],
-            'image'=>['image']
+            'name'=>['required', 'min:3']
         ]);
-        if ($request->hasFile('image')){
-            Storage::delete($category->image);
-
-            $path = $request->file('image')->store('categoryImages', 'public');
-            $attributes['image'] = asset('public/storage/' . $path);
-        }
         $category->update($attributes);
         return response($category);
     }
