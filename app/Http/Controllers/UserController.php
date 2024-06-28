@@ -8,38 +8,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    /**
-     * @OA\Post(
-     *     path="/register",
-     *     summary="Register user",
-     *     tags={"User"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name", "email", "password"},
-     *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="email", type="string", format="email"),
-     *             @OA\Property(property="password", type="string", format="password")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=422, description="Validation error")
-     * )
-     */
-    public function register(Request $request) {
-        $attributes = $request->validate([
-            'name'=>['required'],
-            'email'=>['required', 'unique:users'],
-            'password'=>['required']
-        ]);
-
-        $attributes['password'] = Hash::make($attributes['password']);
-
-        $user = User::create($attributes);
-        return response([
-            'token'=>$user->createToken('oauth_token', ['*'], now()->addMonth())->plainTextToken
-        ]);
-    }
+//    public function register(Request $request) {
+//        $attributes = $request->validate([
+//            'name'=>['required'],
+//            'email'=>['required', 'unique:users'],
+//            'password'=>['required']
+//        ]);
+//
+//        $attributes['password'] = Hash::make($attributes['password']);
+//
+//        $user = User::create($attributes);
+//        return response([
+//            'token'=>$user->createToken('oauth_token', ['*'], now()->addMonth())->plainTextToken
+//        ]);
+//    }
 
     /**
      * @OA\Post(

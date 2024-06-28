@@ -26,7 +26,7 @@ use App\Http\Controllers\CustomerController;
 
 
 // Admin
-Route::post('/register', [UserController::class,'register']);
+//Route::post('/register', [UserController::class,'register']);
 Route::post('/login', [UserController::class,'login']);
 
 Route::middleware('auth:sanctum')->group(function (){
