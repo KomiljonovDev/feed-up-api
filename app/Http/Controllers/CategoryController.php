@@ -120,7 +120,6 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        Storage::delete($category->image);
         $category->delete();
         return response(['message'=>'successfully deleted']);
     }
