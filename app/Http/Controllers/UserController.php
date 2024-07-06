@@ -8,20 +8,20 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-//    public function register(Request $request) {
-//        $attributes = $request->validate([
-//            'name'=>['required'],
-//            'email'=>['required', 'unique:users'],
-//            'password'=>['required']
-//        ]);
-//
-//        $attributes['password'] = Hash::make($attributes['password']);
-//
-//        $user = User::create($attributes);
-//        return response([
-//            'token'=>$user->createToken('oauth_token', ['*'], now()->addMonth())->plainTextToken
-//        ]);
-//    }
+    public function register(Request $request) {
+        $attributes = $request->validate([
+            'name'=>['required'],
+            'email'=>['required', 'unique:users'],
+            'password'=>['required']
+        ]);
+
+        $attributes['password'] = Hash::make($attributes['password']);
+
+        $user = User::create($attributes);
+        return response([
+            'token'=>$user->createToken('oauth_token', ['*'], now()->addMonth())->plainTextToken
+        ]);
+    }
 
     /**
      * @OA\Post(
