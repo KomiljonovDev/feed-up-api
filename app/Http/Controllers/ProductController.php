@@ -31,10 +31,8 @@ class ProductController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"category_id", "name", "price", "description", "slug", "image"},
+     *             required={"category_id", "name", "price", "image"},
      *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="slug", type="string"),
      *             @OA\Property(property="image", type="string", format="binary")
      *         )
      *     ),
@@ -49,9 +47,7 @@ class ProductController extends Controller
         $attributes = $request->validate([
             'category_id' => ['required', Rule::exists('categories', 'id')],
             'name' => ['required', 'min:3'],
-            'slug' => ['required', 'unique:products'],
             'price' => ['required', 'integer'],
-            'description' => ['required', 'min:10'],
             'image' => ['required', 'image']
         ]);
 
@@ -95,10 +91,8 @@ class ProductController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name", "description", "slug", "category_id", "price"},
+     *             required={"name"", "category_id", "price"},
      *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="description", type="string"),
-     *             @OA\Property(property="slug", type="string"),
      *             @OA\Property(property="image", type="string", format="binary")
      *         )
      *     ),
@@ -112,8 +106,6 @@ class ProductController extends Controller
         $attributes = $request->validate([
             'category_id'=>['required',Rule::exists('categories', 'id')],
             'name'=>['required', 'min:3'],
-            'description'=>['required', 'min:10'],
-            'slug'=>['required', Rule::unique('products', 'slug')->ignore($product->id)],
             'price'=>['required', 'integer'],
             'image'=>['image']
         ]);
