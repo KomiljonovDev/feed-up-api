@@ -47,6 +47,7 @@ Route::middleware('auth:sanctum')->group(function (){
 
 // User
 Route::get('getToken', [CustomerController::class, 'getToken']);
+Route::get('getMyCartItem', [CartItemController::class, 'getMyCartItem']);
 
 // Category
 Route::get('categories', [CategoryController::class, 'get']);

@@ -11,6 +11,30 @@ class CartItemController extends Controller
 {
     /**
      * @OA\Post(
+     *     path="/cartItem/get",
+     *     summary="Get cart item",
+     *     tags={"Cart Item"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"token"},
+     *             @OA\Property(property="token", type="string"),
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=401, description="Unauthorized"),
+     *     @OA\Response(response=404, description="Not Found")
+     * )
+     */
+    public function getMyCartItem (Request $request) {
+        $attributes = $request->validate([
+            'token'=>['required', Rule::exists('customers', 'token')],
+        ]);
+        $customer = Customer::where('token', '=', $attributes['token'])->get()->first();
+        return response(CartItem::where('customer_id', '=', $customer->id)->get());
+    }
+    /**
+     * @OA\Post(
      *     path="/cartItem/create",
      *     summary="Create cart item",
      *     tags={"Cart Item"},
