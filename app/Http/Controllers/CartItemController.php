@@ -10,7 +10,7 @@ use Illuminate\Validation\Rule;
 class CartItemController extends Controller
 {
     /**
-     * @OA\Post(
+     * @OA\Get(
      *     path="/cartItem/get",
      *     summary="Get cart item",
      *     tags={"Cart Item"},
