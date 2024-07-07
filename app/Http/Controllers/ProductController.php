@@ -33,6 +33,8 @@ class ProductController extends Controller
      *         @OA\JsonContent(
      *             required={"category_id", "name", "price", "image"},
      *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="price", type="float"),
+     *             @OA\Property(property="category_id", type="integer"),
      *             @OA\Property(property="image", type="string", format="binary")
      *         )
      *     ),
@@ -93,6 +95,8 @@ class ProductController extends Controller
      *         @OA\JsonContent(
      *             required={"name", "category_id", "price"},
      *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="price", type="float"),
+     *             @OA\Property(property="category_id", type="integer"),
      *             @OA\Property(property="image", type="string", format="binary")
      *         )
      *     ),
