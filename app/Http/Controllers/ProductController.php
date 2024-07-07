@@ -35,7 +35,7 @@ class ProductController extends Controller
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="price", type="float"),
      *             @OA\Property(property="category_id", type="integer"),
-     *             @OA\Property(property="image", type="string", format="binary")
+     *             @OA\Property(property="image", type="file")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Successful operation"),
@@ -97,7 +97,7 @@ class ProductController extends Controller
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="price", type="float"),
      *             @OA\Property(property="category_id", type="integer"),
-     *             @OA\Property(property="image", type="string", format="binary")
+     *             @OA\Property(property="image", type="file")
      *         )
      *     ),
      *     @OA\Response(response=200, description="Successful operation"),
