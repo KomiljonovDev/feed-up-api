@@ -91,7 +91,7 @@ class ProductController extends Controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"name"", "category_id", "price"},
+     *             required={"name", "category_id", "price"},
      *             @OA\Property(property="name", type="string"),
      *             @OA\Property(property="image", type="string", format="binary")
      *         )
