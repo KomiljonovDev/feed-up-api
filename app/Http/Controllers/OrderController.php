@@ -51,20 +51,22 @@ class OrderController extends Controller
 
         $customer = Customer::where('token', '=', $attributes['token'])->get()->first();
         $cartItems = CartItem::where('customer_id', '=', $customer->id)->get();
-
-        foreach ($cartItems as $cartItem){
-            $product = Product::where('id', '=', $cartItem->product_id)->get()->first();
-            Order::create([
-                'product_id'=>$product->id,
-                'product_name'=>$product->name,
-                'quantity'=>$cartItem->quantity,
-                'price'=>$cartItem->quantity*$product->price,
-                'status'=>'active'
-            ]);
-            Http::get('api.telegram.org/bot' .env('TELEGRAM_BOT_TOKEN') . '/sendMessage?chat_id=931026030&text=Yangi buyurtma bor');
-            $cartItem->delete();
+        if ($cartItems){
+            foreach ($cartItems as $cartItem){
+                $product = Product::where('id', '=', $cartItem->product_id)->get()->first();
+                Order::create([
+                    'product_id'=>$product->id,
+                    'product_name'=>$product->name,
+                    'quantity'=>$cartItem->quantity,
+                    'price'=>$cartItem->quantity*$product->price,
+                    'status'=>'active'
+                ]);
+                Http::get('api.telegram.org/bot' . env('TELEGRAM_BOT_TOKEN') . '/sendMessage?chat_id=931026030&text=Yangi buyurtma bor');
+                $cartItem->delete();
+            }
+            return response(['message'=>'order sent successfully']);
         }
-        return response(['message'=>'order sent successfully']);
+        return response(['message'=>'cart is emppty. Please fill cart first']);
     }
 
     /**
