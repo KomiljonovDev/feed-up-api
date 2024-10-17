@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,9 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name'=>fake()->name,
-            'description'=>fake()->text,
-            'slug'=>fake()->slug,
-            'image'=>fake()->name . ".jpg"
+            'category_id'=>Category::inRandomOrder()->first()?->id,
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -21,7 +22,7 @@ class CategoryController extends Controller
     public function get()
     {
         $categories = Category::paginate(10);
-        return response($categories);
+        return CategoryResource::collection($categories);
     }
 
     /**

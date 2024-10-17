@@ -19,11 +19,9 @@ class ProductFactory extends Factory
     {
         return [
             'category_id'=>Category::factory(),
-            'slug'=>fake()->slug,
             'name'=>fake()->name,
             'price'=>fake()->numberBetween(1000, 100000),
-            'description'=>fake()->text,
-            'image'=>fake()->name
+            'image'=>fake()->image('storage/app/public/productImages',200,200, null, false),
         ];
     }
 }

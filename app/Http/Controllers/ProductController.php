@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Resources\ProductResource;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
@@ -20,8 +21,8 @@ class ProductController extends Controller
      * )
      */
     public function get () {
-        $products = Product::paginate(20);
-        return response($products);
+        $products = Product::with('category')->paginate(20);
+        return ProductResource::collection($products);
     }
     /**
      * @OA\Post(
@@ -107,6 +108,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
+//        dd($request->all());
         $attributes = $request->validate([
             'category_id'=>['required',Rule::exists('categories', 'id')],
             'name'=>['required', 'min:3'],

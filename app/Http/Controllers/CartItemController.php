@@ -11,7 +11,7 @@ class CartItemController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/cartItem/get",
+     *     path="/cartItem/get",ar
      *     summary="Get cart item",
      *     tags={"Cart Item"},
      *     @OA\RequestBody(
@@ -28,10 +28,9 @@ class CartItemController extends Controller
      */
     public function getMyCartItem (Request $request) {
         $attributes = $request->validate([
-            'token'=>['required', Rule::exists('customers', 'token')],
+            'telegram_id'=>['required', 'integer'],
         ]);
-        $customer = Customer::where('token', '=', $attributes['token'])->get()->first();
-        return response(CartItem::where('customer_id', '=', $customer->id)->get());
+        return response(CartItem::where('telegram_id', '=', $attributes['telegram_id'])->with('product')->get());
     }
     /**
      * @OA\Post(
@@ -55,22 +54,21 @@ class CartItemController extends Controller
     public function store(Request $request)
     {
         $attributes = $request->validate([
-            'token'=>['required', Rule::exists('customers', 'token')],
+            'telegram_id'=>['required', 'integer'],
             'product_id'=>['required', Rule::exists('products', 'id')],
             'quantity'=>['required', 'integer']
         ]);
 
-        $customer = Customer::where('token', '=', $attributes['token'])->get()->first();
-        $cartItem = CartItem::where('customer_id', '=', $customer->id)->where('product_id', '=', $attributes['product_id'])->get();
+        $cartItem = CartItem::where('telegram_id', '=', $attributes['telegram_id'])->where('product_id', '=', $attributes['product_id'])->get();
 
         if (!count($cartItem)){
-            CartItem::create(['product_id'=>$attributes['product_id'], 'customer_id'=>$customer->id, 'quantity'=>$attributes['quantity']]);
+            CartItem::create(['product_id'=>$attributes['product_id'], 'telegram_id'=>$attributes['telegram_id'], 'quantity'=>$attributes['quantity']]);
         }else{
             $cartItem[0]->increment('quantity', $attributes['quantity']);
             $cartItem[0]->save();
         }
 
-        $cart = CartItem::where('customer_id', '=', $customer->id)->get();
+        $cart = CartItem::where('telegram_id', '=', $attributes['telegram_id'])->get();
         return response($cart);
     }
 
@@ -100,11 +98,10 @@ class CartItemController extends Controller
     public function destroy(Product $product, Request $request)
     {
         $attributes = $request->validate([
-            'token'=>['required', Rule::exists('customers', 'token')],
+            'telegram_id'=>['required', 'integer'],
         ]);
 
-        $customer = Customer::where('token', '=', $attributes['token'])->get()->first();
-        $cartItems = CartItem::where('customer_id', '=', $customer->id)->where('product_id', '=', $product->id)->get();
+        $cartItems = CartItem::where('telegram_id', '=', $attributes['telegram_id'])->where('product_id', '=', $product->id)->get();
         if ($cartItems->first()?->quantity <= 1){
             $cartItems->first()?->delete();
         }else{
@@ -112,7 +109,7 @@ class CartItemController extends Controller
             $cartItems[0]->save();
         }
 
-        $cart = CartItem::where('customer_id', '=', $customer->id)->get();
+        $cart = CartItem::where('telegram_id', '=', $attributes['telegram_id'])->get();
         return response($cart);
     }
 }

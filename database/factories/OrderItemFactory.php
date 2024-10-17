@@ -2,13 +2,14 @@
 
 namespace Database\Factories;
 
+use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class OrderFactory extends Factory
+class OrderItemFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -18,9 +19,10 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'full_name'=>fake()->name,
-            'phone_number'=>fake()->numberBetween(1000, 100000),
-            'status'=>fake()->randomElement(['active', 'done', 'failed'])
+            'product_id' => Product::factory(),
+            'order_id' => Order::factory(),
+            'quantity' => $this->faker->numberBetween(1, 10),
+            'price' => $this->faker->numberBetween(1, 10),
         ];
     }
 }
