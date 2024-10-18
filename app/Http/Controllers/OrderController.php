@@ -11,38 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Validation\Rule;
 
-class OrderController extends Controller {
-    /**
-     * @OA\Get(
-     *     path="/orders",
-     *     summary="Get orders",
-     *     tags={"Orders"},
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized")
-     * )
-     */
+class OrderController extends Controller
+{
     public function get () {
         $orders = OrderItem::paginate(20);
         return response($orders);
     }
-
-    /**
-     * @OA\Post(
-     *     path="/order/create",
-     *     summary="Create order",
-     *     tags={"Orders"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"telegram_id"},
-     *             @OA\Property(property="telegram_id", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=404, description="Not Found")
-     * )
-     */
     public function store (Request $request) {
         $attributes = $request->validate(['telegram_id' => 'required|integer', 'phone_number' => 'required|integer', 'full_name' => 'required|string',]);
 
@@ -59,67 +33,16 @@ class OrderController extends Controller {
         }
         return response(['message' => 'cart is emppty. Please fill cart first']);
     }
-
-    /**
-     * @OA\Patch(
-     *     path="/orders/{order:id}/complete",
-     *     summary="Complete order",
-     *     tags={"Orders"},
-     *     @OA\Parameter(
-     *         name="order:id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=404, description="Not Found")
-     * )
-     */
     public function complete (OrderItem $order) {
         $order->status = 'completed';
         $order->save();
         return response($order);
     }
-
-    /**
-     * @OA\Patch(
-     *     path="/orders/{order:id}/cancel",
-     *     summary="Cancel order",
-     *     tags={"Orders"},
-     *     @OA\Parameter(
-     *         name="order:id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=404, description="Not Found")
-     * )
-     */
     public function cancel (OrderItem $order) {
         $order->status = 'canceled';
         $order->save();
         return response($order);
     }
-
-    /**
-     * @OA\Delete(
-     *     path="/orders/{order:id}",
-     *     summary="Delete order",
-     *     tags={"Orders"},
-     *     @OA\Parameter(
-     *         name="order:id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=404, description="Not Found")
-     * )
-     */
     public function destroy (OrderItem $order) {
         $order->delete();
         return response(['message' => 'deleted succcessfully']);

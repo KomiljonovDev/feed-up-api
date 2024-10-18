@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function register(Request $request) {
+    public function store(Request $request) {
         $attributes = $request->validate([
             'name'=>['required'],
             'email'=>['required', 'unique:users'],
@@ -22,25 +22,6 @@ class UserController extends Controller
             'token'=>$user->createToken('oauth_token', ['*'], now()->addMonth())->plainTextToken
         ]);
     }
-
-    /**
-     * @OA\Post(
-     *     path="/login",
-     *     summary="Login user",
-     *     tags={"User"},
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"email", "password"},
-     *             @OA\Property(property="email", type="string", format="email"),
-     *             @OA\Property(property="password", type="string", format="password")
-     *         )
-     *     ),
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized"),
-     *     @OA\Response(response=422, description="Validation error")
-     * )
-     */
     public function login(Request $request) {
         $attributes = $request->validate([
             'email'=>['required'],

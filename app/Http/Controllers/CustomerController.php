@@ -7,15 +7,6 @@ use Illuminate\Support\Str;
 
 class CustomerController extends Controller
 {
-    /**
-     * @OA\Get(
-     *     path="/getToken",
-     *     summary="Get customer token",
-     *     tags={"Customer"},
-     *     @OA\Response(response=200, description="Successful operation"),
-     *     @OA\Response(response=401, description="Unauthorized")
-     * )
-     */
     public function getToken()
     {
         $id = Customer::where('id', '>', '1')->latest()->first()?->id;
