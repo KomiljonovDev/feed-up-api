@@ -2,20 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\OrderResource;
 use App\Models\CartItem;
-use App\Models\Customer;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Validation\Rule;
 
 class OrderController extends Controller
 {
-    public function get () {
-        $orders = OrderItem::paginate(20);
+    public function index () {
+        $orders = OrderResource::collection(Order::all());
         return response($orders);
+    }
+    public function show (Order $order) {
+        $order->load('orderItems');
+        return new OrderResource($order);
     }
     public function store (Request $request) {
         $attributes = $request->validate(['telegram_id' => 'required|integer', 'phone_number' => 'required|integer', 'full_name' => 'required|string',]);
