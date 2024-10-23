@@ -18,6 +18,7 @@ class OrderController extends Controller
     }
     public function show (Order $order) {
         $order->load('orderItems');
+        $order->load('orderItems.product');
         return new OrderResource($order);
     }
     public function store (Request $request) {
@@ -36,15 +37,13 @@ class OrderController extends Controller
         }
         return response(['message' => 'cart is emppty. Please fill cart first']);
     }
-    public function complete (OrderItem $order) {
-        $order->status = 'completed';
+
+    public function update (Order $order) {
+        $order->status = $order->status == 'active' ? 'done' : 'active';
         $order->save();
-        return response($order);
-    }
-    public function cancel (OrderItem $order) {
-        $order->status = 'canceled';
-        $order->save();
-        return response($order);
+        $order->load('orderItems');
+        $order->load('orderItems.product');
+        return new OrderResource($order);
     }
     public function destroy (OrderItem $order) {
         $order->delete();
