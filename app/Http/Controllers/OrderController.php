@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Http;
 class OrderController extends Controller
 {
     public function index () {
-        $orders = OrderResource::collection(Order::all());
-        return response($orders);
+        $orders = Order::query()->paginate(10);
+        return OrderResource::collection($orders);
     }
     public function show (Order $order) {
         $order->load('orderItems');

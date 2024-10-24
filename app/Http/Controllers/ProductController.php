@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
-use OpenApi\Annotations as OA;
 
 class ProductController extends Controller
 {

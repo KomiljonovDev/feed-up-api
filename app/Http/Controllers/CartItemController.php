@@ -2,7 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\CartItem;
-use App\Models\Customer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
