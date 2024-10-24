@@ -1,0 +1,45 @@
+services:
+    feed_web:
+        container_name: feed_web
+        image: nginx:alpine  # Use the Nginx image
+        ports:
+            - "7000:80"  # Map port 8080 on the host to port 80 inside the container
+        volumes:
+            - ./:/var/www  # Mount the Laravel application directory
+            - ./nginx.conf:/etc/nginx/conf.d/default.conf  # Use our Nginx config
+        depends_on:
+            - feed_app  # Ensure PHP-FPM is started before Nginx
+        networks:
+            - os-network  # Connect to the custom network
+
+    feed_app:
+        container_name: feed_app
+        build: .  # Build from the Dockerfile
+        depends_on:
+            - feed_db
+        volumes:
+            - ./:/var/www  # Mount the Laravel application directory
+        networks:
+            - os-network  # Connect to the custom network
+
+    feed_db:
+        container_name: feed_db
+        image: mysql:8  # Use MySQL image
+        restart: always
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_DATABASE: online_store  # Create a database named 'laravel'
+            MYSQL_ROOT_PASSWORD: root  # Set the root password for MySQL
+        volumes:
+            - feed_db:/var/lib/mysql  # Persist MySQL data
+        networks:
+            - os-network  # Connect to the custom network
+
+networks:
+    os-network:  # Create a custom network named 'os-network'
+        driver: bridge
+
+# Define the volume for MySQL data persistence
+volumes:
+    feed_db:
