@@ -20,7 +20,8 @@ class OrderFactory extends Factory
         return [
             'full_name'=>fake()->name,
             'phone_number'=>fake()->numberBetween(1000, 100000),
-            'status'=>fake()->randomElement(['active', 'done', 'failed'])
+            'status'=>fake()->randomElement(['pending', 'completed', 'canceled']),
+            'created_at'=>fake()->dateTimeBetween('-8 month', 'now'),
         ];
     }
 }

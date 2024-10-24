@@ -38,8 +38,15 @@ class OrderController extends Controller
         return response(['message' => 'cart is emppty. Please fill cart first']);
     }
 
-    public function update (Order $order) {
-        $order->status = $order->status == 'active' ? 'done' : 'active';
+    public function complete (Order $order) {
+        $order->status = 'completed';
+        $order->save();
+        $order->load('orderItems');
+        $order->load('orderItems.product');
+        return new OrderResource($order);
+    }
+    public function cancel (Order $order) {
+        $order->status = 'canceled';
         $order->save();
         $order->load('orderItems');
         $order->load('orderItems.product');
@@ -47,6 +54,30 @@ class OrderController extends Controller
     }
     public function destroy (OrderItem $order) {
         $order->delete();
-        return response(['message' => 'deleted succcessfully']);
+        return response(['message' => 'deleted successfully']);
+    }
+
+    public function stats () {
+        $completed = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, MONTHNAME(created_at) as month_name, COUNT(*) as count')
+            ->where('status', 'completed')
+            ->groupByRaw('year, month, month_name')
+            ->orderByRaw('month')
+            ->pluck('count', 'month_name');
+
+        $all = Order::selectRaw('YEAR(created_at) as year, MONTH(created_at) as month, MONTHNAME(created_at) as month_name, COUNT(*) as count')
+            ->groupByRaw('year, month, month_name')
+            ->orderByRaw('month')
+            ->pluck('count', 'month_name');
+
+        $data = [
+            'completed' => $completed,
+            'all' => $all
+        ];
+
+        return response($data);
+    }
+    public function latest () {
+        $latest =OrderResource::collection(Order::query()->where('status', 'pending')->orderBy('created_at', 'desc')->limit(5)->get());
+        return response($latest);
     }
 }

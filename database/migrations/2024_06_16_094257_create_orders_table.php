@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('full_name');
             $table->bigInteger('phone_number');
-            $table->string('status', '10')->default('active');
+            $table->enum('status', ['pending','completed','canceled'])->default('pending');
             $table->timestamps();
         });
     }
