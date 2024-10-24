@@ -11,7 +11,7 @@ use OpenApi\Annotations as OA;
 class ProductController extends Controller
 {
     public function get () {
-        $products = Product::with('category')->paginate(20);
+        $products = Product::with('category')->paginate(10);
         return ProductResource::collection($products);
     }
     public function store(Request $request)
